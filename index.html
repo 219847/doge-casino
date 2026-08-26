@@ -36,6 +36,33 @@ User profiles
 </script>
 <script src="https://219847.github.io/signup/showLoggedIn.js"></script>
 <script src="https://219847.github.io/signup/footer.js"></script>
+<script>
+async function updateBalanceDisplay() {
+  const { data, error } = await client.auth.getUser();
+  if (error || !data.user) {
+    document.getElementById("balanceDisplay").textContent = "Balance: Not logged in";
+    return;
+  }
+
+  const user = data.user;
+
+  const { data: row } = await client
+    .from("user_balance")
+    .select("balance")
+    .eq("user_id", user.id)
+    .single();
+
+  if (!row) {
+    document.getElementById("balanceDisplay").textContent = "Balance: Error";
+    return;
+  }
+
+  document.getElementById("balanceDisplay").textContent =
+    "Balance: " + row.balance.toFixed(2);
+}
+updateBalanceDisplay()
+    
+</script>
 
 </body>
 </html>

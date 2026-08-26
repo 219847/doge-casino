@@ -20,7 +20,9 @@
     h3 {
         color:white;
     }
-    
+    div {
+        color:white;
+    }
 </style>
 </head>
 <body>
@@ -30,6 +32,7 @@
 <a href="https://219847.github.io/login">Login</a>
 <p id="userInfo">Loading user...</p>
 <p id="balanceDisplay">Balance: Loading...</p>
+<div id="clock" style="font-size:2rem;font-family:monospace;"></div>
 <h2>Our games</h2>
 <a href="https://219847.github.io/coinflip">Coinflip</a><br>
 <p>The classic coinflip</p>
@@ -84,6 +87,17 @@ async function updateBalanceDisplay() {
 updateBalanceDisplay()
     
 </script>
+<script>
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const s = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+  }
 
+  updateClock();              // initial call
+  setInterval(updateClock, 1000); // update every second
+</script>
 </body>
 </html>

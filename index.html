@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doge Casino</title>
+</head>
+<body>
+<h1>Doge Casino</h1>
+<h3>Welcome to the Doge Casino. Here we have some free to play casino games so you won't get graped at las vegas.</h3>
+<a href="https://219847.github.io/signup">Get started</a>
+<a href="https://219847.github.io/login">Login</a>
+<p id="userInfo">Loading user...</p>
+<p id="balanceDisplay">Balance: Loading...</p>
+<h2>Our games</h2>
+<a href="https://219847.github.io/coinflip">Coinflip</a><br>
+<p>The classic coinflip</p>
+<p>More coming soon!
+<br>
+Upcoming scheduled releases:<br>
+Roulette<br>
+Crash<br>
+Dice roll<br>
+Upcoming features:<br>
+Daily rewards<br>
+Leaderboards<br>
+User stats<br>
+User profiles
+</p>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://fjkvbkspjcvfdnlxajty.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_NZscoctqsHq6AInmQIDFdQ_gYvNed5d";
+  let showInfo=false;
+  const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
+<script src="https://219847.github.io/signup/showLoggedIn.js"></script>
+<script src="https://219847.github.io/signup/footer.js"></script>
+
+</body>
+</html>

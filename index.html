@@ -165,6 +165,18 @@ async function claimDailyReward() {
   };
 }
 
+async function runDailyReward() {
+  const box = document.getElementById("dailyResult");
+  const result = await claimDailyReward();
+
+  if (result.error) {
+    box.textContent = result.error;
+    return;
+  }
+
+  box.textContent = `You claimed ${result.reward.toFixed(2)}! New balance: ${result.newBalance.toFixed(2)}`;
+  updateBalanceDisplay(); // refresh live balance
+}
     
 </script>
 </body>

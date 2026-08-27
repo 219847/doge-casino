@@ -35,6 +35,9 @@
 <p id="clockLabel">Time is:</p>
 <div id="clock" style="font-size:2rem;font-family:monospace;"></div>
 <p id="warning">Please play responsibily. Know your time limits. This is a fake money casino.</p> 
+<button onclick="runDailyReward()">Claim Daily Reward</button>
+<p id="dailyResult"></p>
+
 <h2>Our games</h2>
 <a href="https://219847.github.io/coinflip">Coinflip</a><br>
 <p>The classic coinflip</p>
@@ -100,6 +103,69 @@ updateBalanceDisplay()
 
   updateClock();              // initial call
   setInterval(updateClock, 1000); // update every second
+</script>
+<!daily reward script>    
+<script>
+async function claimDailyReward() {
+  const { data: userData, error: userError } = await client.auth.getUser();
+  if (userError || !userData.user) {
+    return { error: "Not logged in." };
+  }
+
+  const user = userData.user;
+
+  // Fetch balance + lastDailyReward
+  const { data: row, error } = await client
+    .from("user_balance")
+    .select("balance, lastDailyReward")
+    .eq("user_id", user.id)
+    .single();
+
+  if (error || !row) {
+    return { error: "Could not fetch balance." };
+  }
+
+  let { balance, lastDailyReward } = row;
+
+  const now = new Date();
+
+  // If NULL → allow reward immediately
+  if (lastDailyReward) {
+    const last = new Date(lastDailyReward);
+    const hoursSince = (now - last) / (1000 * 60 * 60);
+
+    if (hoursSince < 24) {
+      const hoursLeft = (24 - hoursSince).toFixed(1);
+      return { error: `Daily reward available in ${hoursLeft} hours.` };
+    }
+  }
+
+  // Reward formula: 200 + 1% of balance
+  const reward = 200 + balance * 0.01;
+
+  const newBalance = balance + reward;
+
+  // Update balance + timestamp
+  const { error: updateError } = await client
+    .from("user_balance")
+    .update({
+      balance: newBalance,
+      lastDailyReward: now.toISOString()
+    })
+    .eq("user_id", user.id);
+
+  if (updateError) {
+    return { error: "Failed to update daily reward." };
+  }
+
+  return {
+    reward,
+    newBalance,
+    nextRewardIn: "24 hours"
+  };
+}
+
+    
 </script>
 </body>
 </html>
